@@ -1,0 +1,19 @@
+{
+  "name": "tvmaj",
+  "version": "1.0.0",
+  "description": "Node.js api wrapper for tvmaze.com",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BorisO/tvmaj.git"
+  },
+  "author": "Boris Onufriyev",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/BorisO/tvmaj/issues"
+  },
+  "homepage": "https://github.com/BorisO/tvmaj#readme"
+}
