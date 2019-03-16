@@ -18,21 +18,55 @@ module.exports = class tvmaj {
   }
 
   // request function for api calls
-  async _request(path, version = "v1") {
-    const url = `https://api.tvmaze.com/${version}/${[path]}`;
-    const headers = {
-      Authorization: `Basic ${this.authorization}`,
-      Accept: "application/json"
+  async _request({ path, version = "v1", method = "GET", body }) {
+    const url = `https://api.tvmaze.com/${version}/${path}`;
+    const opts = {
+      method,
+      headers: {
+        Authorization: `Basic ${this.authorization}`,
+        Accept: "application/json"
+      },
+      body: JSON.stringify(body)
+    };
+    if (method === "PUT") {
+      opts.headers["Content-Type"] = "application/json";
+    }
+    return fetch(url, opts)
+      .then(response => {
+        return response.text();
+      })
+      .then(result => {
+        result = result ? JSON.parse(result) : {};
+        if (result.status && result.status !== 200)
+          throw new Error(`${result.status}: ${result.message}`);
+        else return result;
+      });
+  }
+
+  // MARKED EPISODES API
+  async getMarkedEpisodes(id) {
+    const path = `user/episodes/${id ? id : ""}`;
+    const resp = await this._request({ path });
+    return resp;
+  }
+
+  async deleteMarkedEpisode(id) {
+    if (!id) throw new Error("No ID provided to deleteMarkedEpisode.");
+    const path = `user/episodes/${id}`;
+    const resp = await this._request({ path, method: "DELETE" });
+    return resp;
+  }
+
+  async markEpisode(id, time, type) {
+    if (!id) throw new Error("No ID provided to markEpisode.");
+    const body = {
+      episode_id: id,
+      marked_at: time ? time : 0,
+      type: type ? type : 0
     };
 
-    // Fetch result and parse it as JSON
-    const body = await fetch(url, { headers });
-    const result = await body.json();
-
-    // Handle errors
-    if (result.status && result.status !== 200)
-      throw new Error(`${result.status}: ${result.message}`);
-
-    return result;
+    const path = `user/episodes/${id}`;
+    const resp = await this._request({ path, method: "PUT", body });
+    return resp;
   }
 };
