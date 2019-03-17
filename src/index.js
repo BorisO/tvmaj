@@ -38,7 +38,9 @@ module.exports = class tvmaj {
       .then(result => {
         result = result ? JSON.parse(result) : {};
         if (result.status && result.status !== 200)
-          throw new Error(`${result.status}: ${result.message}`);
+          throw new Error(
+            `${result.status}: ${result.message ? result.message : result.name}`
+          );
         else return result;
       });
   }
@@ -129,6 +131,27 @@ module.exports = class tvmaj {
   async deleteFollowedNetwork(id) {
     if (!id) throw new Error("No ID provided to deleteFollowedNetwork.");
     const path = `user/follows/networks/${id}`;
+    const resp = await this._request({ path, method: "DELETE" });
+    return resp;
+  }
+
+  // FOLLOWED WEBCHANNELS API
+  async getFollowedWebchannels(id) {
+    const path = `user/follows/webchannels/${id ? id : ""}`;
+    const resp = await this._request({ path });
+    return resp;
+  }
+
+  async followWebchannel(id) {
+    if (!id) throw new Error("No ID provided to followWebchannel.");
+    const path = `user/follows/webchannels/${id}`;
+    const resp = await this._request({ path, method: "PUT" });
+    return resp;
+  }
+
+  async deleteFollowedWebchannel(id) {
+    if (!id) throw new Error("No ID provided to deleteFollowedWebchannel.");
+    const path = `user/follows/webchannels/${id}`;
     const resp = await this._request({ path, method: "DELETE" });
     return resp;
   }

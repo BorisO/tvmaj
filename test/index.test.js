@@ -141,4 +141,31 @@ describe("tvmaj", () => {
       expect(resp).toEqual({});
     });
   });
+
+  describe("Follow Webchannels", () => {
+    const webchannel = 2;
+
+    test("Follow a webchannel", async () => {
+      const resp = await tvmaj.followWebchannel(webchannel);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("webChannel_id");
+    });
+
+    test("Get list of followed webchannels", async () => {
+      const resp = await tvmaj.getFollowedWebchannels();
+      expect(resp).toBeInstanceOf(Array);
+    });
+
+    test("Get followed webchannels", async () => {
+      const resp = await tvmaj.getFollowedWebchannels(webchannel);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("webChannel_id");
+    });
+
+    test("Delete a followed webchannel", async () => {
+      const resp = await tvmaj.deleteFollowedWebchannel(webchannel);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toEqual({});
+    });
+  });
 });
