@@ -219,4 +219,31 @@ describe("tvmaj", () => {
       expect(resp).toEqual({});
     });
   });
+
+  describe("Voted Shows", () => {
+    const show = 3182;
+
+    test("Vote on show", async () => {
+      const resp = await tvmaj.voteOnShow(show, 5);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("vote");
+    });
+
+    test("Get list of show votes", async () => {
+      const resp = await tvmaj.getShowVotes();
+      expect(resp).toBeInstanceOf(Array);
+    });
+
+    test("Get show that was voted on", async () => {
+      const resp = await tvmaj.getShowVotes(show);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("vote");
+    });
+
+    test("Delete vote on show", async () => {
+      const resp = await tvmaj.deleteVote(show);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toEqual({});
+    });
+  });
 });

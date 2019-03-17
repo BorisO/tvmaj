@@ -217,4 +217,30 @@ module.exports = class tvmaj {
     const resp = await this._request({ path, method: "PUT" });
     return resp;
   }
+
+  // VOTED SHOWS API
+  async getShowVotes(id) {
+    const path = `user/votes/shows/${id ? id : ""}`;
+    const resp = await this._request({ path });
+    return resp;
+  }
+
+  async voteOnShow(id, vote) {
+    if (!id) throw new Error("No id provided to voteOnShow.");
+    const path = `user/votes/shows/${id}`;
+    const body = {
+      show_id: id,
+      voted_at: 0,
+      vote
+    };
+    const resp = await this._request({ path, method: "PUT", body });
+    return resp;
+  }
+
+  async deleteVote(id) {
+    if (!id) throw new Error("No show id provided to deleteVote.");
+    const path = `user/votes/shows/${id}`;
+    const resp = await this._request({ path, method: "DELETE" });
+    return resp;
+  }
 };
