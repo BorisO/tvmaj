@@ -69,4 +69,46 @@ module.exports = class tvmaj {
     const resp = await this._request({ path, method: "PUT", body });
     return resp;
   }
+
+  // FOLLOWED SHOWS API
+  async getFollowedShows(id) {
+    const path = `user/follows/shows/${id ? id : ""}`;
+    const resp = await this._request({ path });
+    return resp;
+  }
+
+  async deleteFollowedShow(id) {
+    if (!id) throw new Error("No ID provided to deleteFollowedShow.");
+    const path = `user/follows/shows/${id}`;
+    const resp = await this._request({ path, method: "DELETE" });
+    return resp;
+  }
+
+  async followShow(id) {
+    if (!id) throw new Error("No ID provided to followShow.");
+    const path = `user/follows/shows/${id}`;
+    const resp = await this._request({ path, method: "PUT" });
+    return resp;
+  }
+
+  // FOLLOWED PEOPLE API
+  async getFollowedPeople(id) {
+    const path = `user/follows/people/${id ? id : ""}`;
+    const resp = await this._request({ path });
+    return resp;
+  }
+
+  async deleteFollowedPerson(id) {
+    if (!id) throw new Error("No ID provided to deleteFollowedPerson.");
+    const path = `user/follows/people/${id}`;
+    const resp = await this._request({ path, method: "DELETE" });
+    return resp;
+  }
+
+  async followPerson(id) {
+    if (!id) throw new Error("No ID provided to followPerson.");
+    const path = `user/follows/people/${id}`;
+    const resp = await this._request({ path, method: "PUT" });
+    return resp;
+  }
 };

@@ -37,13 +37,19 @@ describe("tvmaj", () => {
   describe("Marked Episodes", () => {
     const episode = 1519312;
 
+    test("Mark an episode", async () => {
+      const resp = await tvmaj.markEpisode(episode);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("episode_id");
+    });
+
     test("Get list of marked episodes", async () => {
       const resp = await tvmaj.getMarkedEpisodes();
       expect(resp).toBeInstanceOf(Array);
     });
 
-    test("Mark an episode", async () => {
-      const resp = await tvmaj.markEpisode(episode);
+    test("Get marked episode", async () => {
+      const resp = await tvmaj.getMarkedEpisodes(episode);
       expect(resp).toBeInstanceOf(Object);
       expect(resp).toHaveProperty("episode_id");
     });
@@ -51,6 +57,61 @@ describe("tvmaj", () => {
     test("Delete a marked episode", async () => {
       const resp = await tvmaj.deleteMarkedEpisode(episode);
       expect(resp).toBeInstanceOf(Object);
+      expect(resp).toEqual({});
+    });
+  });
+
+  describe("Followed Shows", () => {
+    const show = 3182;
+
+    test("Follow a show", async () => {
+      const resp = await tvmaj.followShow(show);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("show_id");
+    });
+
+    test("Get list of followed shows", async () => {
+      const resp = await tvmaj.getFollowedShows();
+      expect(resp).toBeInstanceOf(Array);
+    });
+
+    test("Get followed show", async () => {
+      const resp = await tvmaj.getFollowedShows(show);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("show_id");
+    });
+
+    test("Delete a followed show", async () => {
+      const resp = await tvmaj.deleteFollowedShow(show);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toEqual({});
+    });
+  });
+
+  describe("Follow People", () => {
+    const person = 7567;
+
+    test("Follow a person", async () => {
+      const resp = await tvmaj.followPerson(person);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("person_id");
+    });
+
+    test("Get list of followed people", async () => {
+      const resp = await tvmaj.getFollowedPeople();
+      expect(resp).toBeInstanceOf(Array);
+    });
+
+    test("Get followed person", async () => {
+      const resp = await tvmaj.getFollowedPeople(person);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("person_id");
+    });
+
+    test("Delete a followed person", async () => {
+      const resp = await tvmaj.deleteFollowedPerson(person);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toEqual({});
     });
   });
 });
