@@ -220,7 +220,7 @@ describe("tvmaj", () => {
     });
   });
 
-  describe("Voted Shows", () => {
+  describe("Vote on Shows", () => {
     const show = 3182;
 
     test("Vote on show", async () => {
@@ -241,7 +241,34 @@ describe("tvmaj", () => {
     });
 
     test("Delete vote on show", async () => {
-      const resp = await tvmaj.deleteVote(show);
+      const resp = await tvmaj.deleteShowVote(show);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toEqual({});
+    });
+  });
+
+  describe("Vote on Episodes", () => {
+    const episode = 1221415;
+
+    test("Vote on episode", async () => {
+      const resp = await tvmaj.voteOnEpisode(episode, 5);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("vote");
+    });
+
+    test("Get list of episode votes", async () => {
+      const resp = await tvmaj.getEpisodeVote();
+      expect(resp).toBeInstanceOf(Array);
+    });
+
+    test("Get episode that was voted on", async () => {
+      const resp = await tvmaj.getEpisodeVote(episode);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("vote");
+    });
+
+    test("Delete vote on episode", async () => {
+      const resp = await tvmaj.deleteEpisodeVote(episode);
       expect(resp).toBeInstanceOf(Object);
       expect(resp).toEqual({});
     });

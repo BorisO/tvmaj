@@ -237,9 +237,35 @@ module.exports = class tvmaj {
     return resp;
   }
 
-  async deleteVote(id) {
-    if (!id) throw new Error("No show id provided to deleteVote.");
+  async deleteShowVote(id) {
+    if (!id) throw new Error("No show id provided to deleteShowVote.");
     const path = `user/votes/shows/${id}`;
+    const resp = await this._request({ path, method: "DELETE" });
+    return resp;
+  }
+
+  // VOTED EPISODES API
+  async getEpisodeVote(id) {
+    const path = `user/votes/episodes/${id ? id : ""}`;
+    const resp = await this._request({ path });
+    return resp;
+  }
+
+  async voteOnEpisode(id, vote) {
+    if (!id) throw new Error("No episode id provided to voteOnEpisode.");
+    const path = `user/votes/episodes/${id}`;
+    const body = {
+      episode_id: id,
+      voted_at: 0,
+      vote
+    };
+    const resp = await this._request({ path, method: "PUT", body });
+    return resp;
+  }
+
+  async deleteEpisodeVote(id) {
+    if (!id) throw new Error("No episode id provided to deleteEpisodeVote.");
+    const path = `user/votes/episodes/${id}`;
     const resp = await this._request({ path, method: "DELETE" });
     return resp;
   }
