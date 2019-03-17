@@ -111,4 +111,25 @@ module.exports = class tvmaj {
     const resp = await this._request({ path, method: "PUT" });
     return resp;
   }
+
+  // FOLLOWED NETWORKS API
+  async getFollowedNetworks(id) {
+    const path = `user/follows/networks/${id ? id : ""}`;
+    const resp = await this._request({ path });
+    return resp;
+  }
+
+  async followNetwork(id) {
+    if (!id) throw new Error("No ID provided to followNetwork.");
+    const path = `user/follows/networks/${id}`;
+    const resp = await this._request({ path, method: "PUT" });
+    return resp;
+  }
+
+  async deleteFollowedNetwork(id) {
+    if (!id) throw new Error("No ID provided to deleteFollowedNetwork.");
+    const path = `user/follows/networks/${id}`;
+    const resp = await this._request({ path, method: "DELETE" });
+    return resp;
+  }
 };

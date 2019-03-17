@@ -114,4 +114,31 @@ describe("tvmaj", () => {
       expect(resp).toEqual({});
     });
   });
+
+  describe("Follow Networks", () => {
+    const network = 8;
+
+    test("Follow a network", async () => {
+      const resp = await tvmaj.followNetwork(network);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("network_id");
+    });
+
+    test("Get list of followed networks", async () => {
+      const resp = await tvmaj.getFollowedNetworks();
+      expect(resp).toBeInstanceOf(Array);
+    });
+
+    test("Get followed network", async () => {
+      const resp = await tvmaj.getFollowedNetworks(network);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("network_id");
+    });
+
+    test("Delete a followed network", async () => {
+      const resp = await tvmaj.deleteFollowedNetwork(network);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toEqual({});
+    });
+  });
 });
