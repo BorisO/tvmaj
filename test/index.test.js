@@ -168,4 +168,55 @@ describe("tvmaj", () => {
       expect(resp).toEqual({});
     });
   });
+
+  describe("Tagged Shows", () => {
+    const show_id = 82;
+    const tag_text = "test_tag";
+    let tag_id = null;
+
+    test("Create a tag", async () => {
+      const resp = await tvmaj.createTag(tag_text);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("id");
+      expect(resp).toHaveProperty("name");
+
+      // save tag id for future test use
+      tag_id = resp.id;
+    });
+
+    test("List all tags", async () => {
+      const resp = await tvmaj.getTags();
+      expect(resp).toBeInstanceOf(Array);
+    });
+
+    test("Update a tag", async () => {
+      const newTag = "test_tag_updated";
+      const resp = await tvmaj.updateTag(tag_id, newTag);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp.name).toEqual(newTag);
+    });
+
+    test("List all shows under this tag", async () => {
+      const resp = await tvmaj.getShowsWithTag(tag_id);
+      expect(resp).toBeInstanceOf(Array);
+    });
+
+    test("Tag a show", async () => {
+      const resp = await tvmaj.tagShow(tag_id, show_id);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toHaveProperty("show_id");
+    });
+
+    test("Untag a show", async () => {
+      const resp = await tvmaj.untagShow(tag_id, show_id);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toEqual({});
+    });
+
+    test("Delete a tag", async () => {
+      const resp = await tvmaj.deleteTag(tag_id);
+      expect(resp).toBeInstanceOf(Object);
+      expect(resp).toEqual({});
+    });
+  });
 });

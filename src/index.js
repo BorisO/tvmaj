@@ -28,7 +28,7 @@ module.exports = class tvmaj {
       },
       body: JSON.stringify(body)
     };
-    if (method === "PUT") {
+    if (method === "PUT" || method === "POST" || method === "PATCH") {
       opts.headers["Content-Type"] = "application/json";
     }
     return fetch(url, opts)
@@ -39,7 +39,9 @@ module.exports = class tvmaj {
         result = result ? JSON.parse(result) : {};
         if (result.status && result.status !== 200)
           throw new Error(
-            `${result.status}: ${result.message ? result.message : result.name}`
+            `${result.status}: ${
+              result.message ? result.message : result.name
+            }${result.errors ? ". " + result.errors.name : ""}`
           );
         else return result;
       });
@@ -153,6 +155,66 @@ module.exports = class tvmaj {
     if (!id) throw new Error("No ID provided to deleteFollowedWebchannel.");
     const path = `user/follows/webchannels/${id}`;
     const resp = await this._request({ path, method: "DELETE" });
+    return resp;
+  }
+
+  // TAGGED SHOWS API
+  async getTags() {
+    const path = "user/tags/";
+    const resp = await this._request({ path });
+    return resp;
+  }
+
+  async createTag(name) {
+    if (!name) throw new Error("No name provided to createTag.");
+    const body = {
+      id: 0,
+      name
+    };
+
+    const path = "user/tags/";
+    const resp = await this._request({ path, method: "POST", body });
+    return resp;
+  }
+
+  async deleteTag(id) {
+    if (!id) throw new Error("No ID provided to deleteTag.");
+    const path = `user/tags/${id}`;
+    const resp = await this._request({ path, method: "DELETE" });
+    return resp;
+  }
+
+  async updateTag(id, name) {
+    if (!id) throw new Error("No ID provided to updateTag.");
+    if (!name) throw new Error("No name provided to updateTag.");
+    const body = {
+      name
+    };
+    const path = `user/tags/${id}`;
+    const resp = await this._request({ path, method: "PATCH", body });
+    return resp;
+  }
+
+  async getShowsWithTag(id) {
+    if (!id) throw new Error("No ID provided to getShowsWithTag.");
+    const path = `user/tags/${id}/shows`;
+    const resp = await this._request({ path });
+    return resp;
+  }
+
+  async untagShow(tag_id, show_id) {
+    if (!tag_id) throw new Error("No tag_id provided to untagShow.");
+    if (!show_id) throw new Error("No show_id provided to untagShow.");
+    const path = `user/tags/${tag_id}/shows/${show_id}`;
+    const resp = await this._request({ path, method: "DELETE" });
+    return resp;
+  }
+
+  async tagShow(tag_id, show_id) {
+    if (!tag_id) throw new Error("No tag_id provided to tagShow.");
+    if (!show_id) throw new Error("No show_id provided to tagShow.");
+    const path = `user/tags/${tag_id}/shows/${show_id}`;
+    const resp = await this._request({ path, method: "PUT" });
     return resp;
   }
 };
