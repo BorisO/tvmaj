@@ -37,6 +37,15 @@ describe("tvmaj", () => {
   describe("Marked Episodes", () => {
     const episode = 1519312;
 
+    test("Trying to mark an episode without provide ID throws error", async done => {
+      try {
+        await tvmaj.markEpisode();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to markEpisode.");
+        done();
+      }
+    });
+
     test("Mark an episode", async () => {
       const resp = await tvmaj.markEpisode(episode);
       expect(resp).toBeInstanceOf(Object);
@@ -52,6 +61,15 @@ describe("tvmaj", () => {
       const resp = await tvmaj.getMarkedEpisodes(episode);
       expect(resp).toBeInstanceOf(Object);
       expect(resp).toHaveProperty("episode_id");
+    });
+
+    test("Not providing ID to delete marked episode should throw error", async done => {
+      try {
+        await tvmaj.deleteMarkedEpisode();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to deleteMarkedEpisode.");
+        done();
+      }
     });
 
     test("Delete a marked episode", async () => {
