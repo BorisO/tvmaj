@@ -442,6 +442,22 @@ describe("tvmaj", () => {
   describe("Vote on Episodes", () => {
     const episode = 1221415;
 
+    test("Trying to vote on an episode without providing ID or vote throws error", async done => {
+      try {
+        await tvmaj.voteOnEpisode();
+      } catch (e) {
+        expect(e.message).toEqual("No episode id provided to voteOnEpisode.");
+        done();
+      }
+
+      try {
+        await tvmaj.voteOnEpisode(episode);
+      } catch (e) {
+        expect(e.message).toEqual("No vote provided to voteOnEpisode.");
+        done();
+      }
+    });
+
     test("Vote on episode", async () => {
       const resp = await tvmaj.voteOnEpisode(episode, 5);
       expect(resp).toBeInstanceOf(Object);
@@ -457,6 +473,17 @@ describe("tvmaj", () => {
       const resp = await tvmaj.getEpisodeVote(episode);
       expect(resp).toBeInstanceOf(Object);
       expect(resp).toHaveProperty("vote");
+    });
+
+    test("Trying to delete a vote without providing ID throws error", async done => {
+      try {
+        await tvmaj.deleteEpisodeVote();
+      } catch (e) {
+        expect(e.message).toEqual(
+          "No episode id provided to deleteEpisodeVote."
+        );
+        done();
+      }
     });
 
     test("Delete vote on episode", async () => {
