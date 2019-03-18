@@ -127,6 +127,15 @@ describe("tvmaj", () => {
   describe("Follow People", () => {
     const person = 7567;
 
+    test("Trying to follow a person without providing ID throws error", async done => {
+      try {
+        await tvmaj.followPerson();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to followPerson.");
+        done();
+      }
+    });
+
     test("Follow a person", async () => {
       const resp = await tvmaj.followPerson(person);
       expect(resp).toBeInstanceOf(Object);
@@ -142,6 +151,15 @@ describe("tvmaj", () => {
       const resp = await tvmaj.getFollowedPeople(person);
       expect(resp).toBeInstanceOf(Object);
       expect(resp).toHaveProperty("person_id");
+    });
+
+    test("Not providing ID to delete followed person should throw error", async done => {
+      try {
+        await tvmaj.deleteFollowedPerson();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to deleteFollowedPerson.");
+        done();
+      }
     });
 
     test("Delete a followed person", async () => {
