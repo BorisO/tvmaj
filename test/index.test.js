@@ -266,6 +266,15 @@ describe("tvmaj", () => {
     const tag_text = "test_tag";
     let tag_id = null;
 
+    test("Trying to create a tag without providing ID throws error", async done => {
+      try {
+        await tvmaj.createTag();
+      } catch (e) {
+        expect(e.message).toEqual("No name provided to createTag.");
+        done();
+      }
+    });
+
     test("Create a tag", async () => {
       const resp = await tvmaj.createTag(tag_text);
       expect(resp).toBeInstanceOf(Object);
@@ -281,6 +290,22 @@ describe("tvmaj", () => {
       expect(resp).toBeInstanceOf(Array);
     });
 
+    test("Trying to update a tag without providing ID or name throws error", async done => {
+      try {
+        await tvmaj.updateTag();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to updateTag.");
+        done();
+      }
+
+      try {
+        await tvmaj.updateTag(tag_id);
+      } catch (e) {
+        expect(e.message).toEqual("No name provided to updateTag.");
+        done();
+      }
+    });
+
     test("Update a tag", async () => {
       const newTag = "test_tag_updated";
       const resp = await tvmaj.updateTag(tag_id, newTag);
@@ -288,9 +313,34 @@ describe("tvmaj", () => {
       expect(resp.name).toEqual(newTag);
     });
 
+    test("Trying to get shows with tag without providing ID throws error", async done => {
+      try {
+        await tvmaj.getShowsWithTag();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to getShowsWithTag.");
+        done();
+      }
+    });
+
     test("List all shows under this tag", async () => {
       const resp = await tvmaj.getShowsWithTag(tag_id);
       expect(resp).toBeInstanceOf(Array);
+    });
+
+    test("Trying to tag a show without providing ID or name throws error", async done => {
+      try {
+        await tvmaj.tagShow();
+      } catch (e) {
+        expect(e.message).toEqual("No tag_id provided to tagShow.");
+        done();
+      }
+
+      try {
+        await tvmaj.tagShow(tag_id);
+      } catch (e) {
+        expect(e.message).toEqual("No show_id provided to tagShow.");
+        done();
+      }
     });
 
     test("Tag a show", async () => {
@@ -299,10 +349,35 @@ describe("tvmaj", () => {
       expect(resp).toHaveProperty("show_id");
     });
 
+    test("Trying to untag a show without providing ID or name throws error", async done => {
+      try {
+        await tvmaj.untagShow();
+      } catch (e) {
+        expect(e.message).toEqual("No tag_id provided to untagShow.");
+        done();
+      }
+
+      try {
+        await tvmaj.untagShow(tag_id);
+      } catch (e) {
+        expect(e.message).toEqual("No show_id provided to untagShow.");
+        done();
+      }
+    });
+
     test("Untag a show", async () => {
       const resp = await tvmaj.untagShow(tag_id, show_id);
       expect(resp).toBeInstanceOf(Object);
       expect(resp).toEqual({});
+    });
+
+    test("Trying to delete a tag without providing ID throws error", async done => {
+      try {
+        await tvmaj.deleteTag();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to deleteTag.");
+        done();
+      }
     });
 
     test("Delete a tag", async () => {
