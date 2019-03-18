@@ -172,6 +172,15 @@ describe("tvmaj", () => {
   describe("Follow Networks", () => {
     const network = 8;
 
+    test("Trying to follow a network without providing ID throws error", async done => {
+      try {
+        await tvmaj.followNetwork();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to followNetwork.");
+        done();
+      }
+    });
+
     test("Follow a network", async () => {
       const resp = await tvmaj.followNetwork(network);
       expect(resp).toBeInstanceOf(Object);
@@ -187,6 +196,15 @@ describe("tvmaj", () => {
       const resp = await tvmaj.getFollowedNetworks(network);
       expect(resp).toBeInstanceOf(Object);
       expect(resp).toHaveProperty("network_id");
+    });
+
+    test("Not providing ID to delete followed network should throw error", async done => {
+      try {
+        await tvmaj.deleteFollowedNetwork();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to deleteFollowedNetwork.");
+        done();
+      }
     });
 
     test("Delete a followed network", async () => {
