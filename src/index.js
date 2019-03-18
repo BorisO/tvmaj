@@ -227,6 +227,7 @@ module.exports = class tvmaj {
 
   async voteOnShow(id, vote) {
     if (!id) throw new Error("No id provided to voteOnShow.");
+    if (!vote) throw new Error("No vote provided to voteOnShow.");
     const path = `user/votes/shows/${id}`;
     const body = {
       show_id: id,
