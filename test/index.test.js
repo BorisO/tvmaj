@@ -37,7 +37,7 @@ describe("tvmaj", () => {
   describe("Marked Episodes", () => {
     const episode = 1519312;
 
-    test("Trying to mark an episode without provide ID throws error", async done => {
+    test("Trying to mark an episode without providing ID throws error", async done => {
       try {
         await tvmaj.markEpisode();
       } catch (e) {
@@ -82,6 +82,15 @@ describe("tvmaj", () => {
   describe("Followed Shows", () => {
     const show = 3182;
 
+    test("Trying to follow a show without providing ID throws error", async done => {
+      try {
+        await tvmaj.followShow();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to followShow.");
+        done();
+      }
+    });
+
     test("Follow a show", async () => {
       const resp = await tvmaj.followShow(show);
       expect(resp).toBeInstanceOf(Object);
@@ -97,6 +106,15 @@ describe("tvmaj", () => {
       const resp = await tvmaj.getFollowedShows(show);
       expect(resp).toBeInstanceOf(Object);
       expect(resp).toHaveProperty("show_id");
+    });
+
+    test("Not providing ID to delete followed show should throw error", async done => {
+      try {
+        await tvmaj.deleteFollowedShow();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to deleteFollowedShow.");
+        done();
+      }
     });
 
     test("Delete a followed show", async () => {
