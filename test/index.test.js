@@ -217,6 +217,15 @@ describe("tvmaj", () => {
   describe("Follow Webchannels", () => {
     const webchannel = 2;
 
+    test("Trying to follow a webchannel without providing ID throws error", async done => {
+      try {
+        await tvmaj.followWebchannel();
+      } catch (e) {
+        expect(e.message).toEqual("No ID provided to followWebchannel.");
+        done();
+      }
+    });
+
     test("Follow a webchannel", async () => {
       const resp = await tvmaj.followWebchannel(webchannel);
       expect(resp).toBeInstanceOf(Object);
@@ -232,6 +241,17 @@ describe("tvmaj", () => {
       const resp = await tvmaj.getFollowedWebchannels(webchannel);
       expect(resp).toBeInstanceOf(Object);
       expect(resp).toHaveProperty("webChannel_id");
+    });
+
+    test("Not providing ID to delete followed webchannel should throw error", async done => {
+      try {
+        await tvmaj.deleteFollowedWebchannel();
+      } catch (e) {
+        expect(e.message).toEqual(
+          "No ID provided to deleteFollowedWebchannel."
+        );
+        done();
+      }
     });
 
     test("Delete a followed webchannel", async () => {
